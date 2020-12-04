@@ -44,7 +44,7 @@ python train.py data\ts9_test1_in_FP32.wav data\ts9_test1_out_FP32.wav out_model
 
 # Run prediction on target wav file
 # Specify input file, desired output file, and model path
-predict.py data\ts9_test1_in_FP32.wav output models\ts9_model.h5
+python predict.py data\ts9_test1_in_FP32.wav output models\ts9_model.h5
 ```
 
 **Training parameters**:
