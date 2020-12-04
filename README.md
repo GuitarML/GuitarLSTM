@@ -2,7 +2,7 @@
 
 GuitarLSTM trains guitar effect/amp neural network models for processing
 on wav files.  Record input/output samples from the target guitar amplifier or
-pedal, then use this code to create a digital deep learning model of the
+pedal, then use this code to create a deep learning model of the
 sound. The model can then be applied to other wav files to make it sound
 like the amp or effect. This code uses Tensorflow/Keras.
 
