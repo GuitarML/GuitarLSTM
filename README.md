@@ -52,7 +52,7 @@ predict.py data\ts9_test1_in_FP32.wav output models\ts9_model.h5
 ```bash
 # Use these arguments with train.py to further customize the model:
 
---training_mode=0  # enter 0, 1, or 2 for speed tranining, accuracy traninig, or extended training, respectively
+--training_mode=0  # enter 0, 1, or 2 for speed tranining, accuracy training, or extended training, respectively
 --input_size=150   # sets the number of previous samples to consider for each output sample of audio
 --max_epochs=1     # sets the number of epochs to train for; intended to be increased dramatically for extended training
 --batch_size=4096  # sets the batch size of data for training
