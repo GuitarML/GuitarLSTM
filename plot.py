@@ -1,12 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# import wave
 from scipy.io import wavfile
 import sys
 from scipy import signal
 import argparse
-
 import struct
 
 

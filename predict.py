@@ -1,4 +1,3 @@
-
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import tensorflow.keras.backend as K
@@ -43,12 +42,10 @@ def predict(args):
     f = h5py.File(args.model, 'a')
     input_size = f["info"]["input_size"][0]
     f.close()
-    input_size = 180
-    learning_rate = 0.01
+
     # Load model from .h5 model file
     name = args.out_filename
     model = load_model(args.model, custom_objects={'error_to_signal' : error_to_signal})
-    model.compile(optimizer=Adam(learning_rate=learning_rate), loss=error_to_signal, metrics=[error_to_signal])
     
     # Load and Preprocess Data
     print("Processing input wav..")

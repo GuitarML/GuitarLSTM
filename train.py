@@ -61,7 +61,7 @@ def main(args):
     if not os.path.exists('models/'+name):
         os.makedirs('models/'+name)
     else:
-        print("A model with the same name already exists. Please choose a new name.")
+        print("A model folder with the same name already exists. Please choose a new name.")
         return
 
     train_mode = args.training_mode     # 0 = speed training, 
@@ -70,24 +70,24 @@ def main(args):
     batch_size = args.batch_size 
     test_size = 0.2
     epochs = args.max_epochs
+    input_size = args.input_size
+
+    # TRAINING MODE
     if train_mode == 0:         # Speed Training
         learning_rate = 0.01 
         conv1d_strides = 12    
         conv1d_filters = 16
         hidden_units = 36
-        input_size = 180  
     elif train_mode == 1:       # Accuracy Training (~10x longer than Speed Training)
         learning_rate = 0.01 
         conv1d_strides = 4
         conv1d_filters = 36
         hidden_units= 64
-        input_size = 300 
     else:                       # Extended Training (~60x longer than Accuracy Training)
         learning_rate = 0.0005 
         conv1d_strides = 3
         conv1d_filters = 36
         hidden_units= 96
-        input_size = 500 
 
 
     # Load and Preprocess Data ###########################################
@@ -122,11 +122,6 @@ def main(args):
     model.fit(X_random,y_random, epochs=epochs, batch_size=batch_size, validation_split=test_size)    
 
     model.save('models/'+name+'/'+name+'.h5')
-
-    #model.save('model_data/')
-    #model = load_model('new_model_'+name+'.h5', custom_objects={'error_to_signal' : error_to_signal})
-    #learning_rate = 0.005
-    #model.compile(optimizer=Adam(learning_rate=learning_rate), loss=error_to_signal, metrics=[error_to_signal])
 
     # Run Prediction #################################################
     print("Running prediction..")
@@ -163,7 +158,6 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-
     parser.add_argument("in_file")
     parser.add_argument("out_file")
     parser.add_argument("name")
@@ -171,5 +165,6 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=4096)
     parser.add_argument("--max_epochs", type=int, default=1)
     parser.add_argument("--create_plots", type=int, default=1)
+    parser.add_argument("--input_size", type=int, default=150)
     args = parser.parse_args()
     main(args)
