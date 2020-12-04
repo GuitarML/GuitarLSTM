@@ -6,11 +6,11 @@ pedal, then use this code to create a deep learning model of the
 sound. The model can then be applied to other wav files to make it sound
 like the amp or effect. This code uses Tensorflow/Keras.
 
-The LSTM model is effective for copying the sound of tube amplifiers, distortion, 
-overdrive, and compression. It also captures the impluse response of the mic/cab
-used for recording the samples. In comparison to the WaveNet model, this 
-implementation is much faster and can more accurately copy the sound of 
-complex guitar signals while still training on a CPU.
+The LSTM (Long short-term memory) model is effective for copying the sound of 
+tube amplifiers, distortion, overdrive, and compression. It also captures the 
+impluse response of the mic/cab used for recording the samples. In comparison
+to the WaveNet model, this implementation is much faster and can more accurately 
+copy the sound of complex guitar signals while still training on a CPU.
 
 
 ## Info
