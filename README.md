@@ -39,12 +39,12 @@ Must be single channel, 44.1 kHz, FP32 wav data (not int16)
 # Specify input wav file, output wav file, and desired model name.
 # Output will be saved to "models/out_model_name/" folder.
 
-python train.py data\ts9_test1_in_FP32.wav data\ts9_test1_out_FP32.wav out_model_name
+python train.py data/ts9_test1_in_FP32.wav data/ts9_test1_out_FP32.wav out_model_name
 
 
 # Run prediction on target wav file
 # Specify input file, desired output file, and model path
-python predict.py data\ts9_test1_in_FP32.wav output models\ts9_model.h5
+python predict.py data/ts9_test1_in_FP32.wav output models/ts9_model.h5
 ```
 
 **Training parameters**:
