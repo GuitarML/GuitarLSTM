@@ -88,7 +88,7 @@ Helpful tips on training models:
 This implementation of the LSTM model uses a high amount of
 RAM to preprocess wav data. If you experience crashes due to 
 limited memory, reduce the "input_size" parameter by using 
-the "--input_size=" flag with train.py. The default setting is 150.
+the "--input_size=" flag with train.py. The default setting is 100.
 Increasing this setting will improve training accuracy, but the size 
 of the preprocessed wav data in RAM will increase as well.
 
