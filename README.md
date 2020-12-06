@@ -54,6 +54,7 @@ python predict.py data/ts9_test1_in_FP32.wav output models/ts9_model.h5
 
 --training_mode=0  # enter 0, 1, or 2 for speed tranining, accuracy training, or extended training, respectively
 --input_size=150   # sets the number of previous samples to consider for each output sample of audio
+--split_data=3     # splits the input data by X amount to reduce RAM usage; trains the model on each split separately
 --max_epochs=1     # sets the number of epochs to train for; intended to be increased dramatically for extended training
 --batch_size=4096  # sets the batch size of data for training
 
@@ -92,6 +93,13 @@ the "--input_size=" flag with train.py. The default setting is 100,
 which requires about 8GB of RAM. Increasing this setting will improve 
 training accuracy, but the size of the preprocessed wav data in 
 RAM will increase as well.
+
+You can also use the "--split_data" parameter with train.py to
+train the same model on separate sections of the data. This
+will reduce RAM usage while still allowing a high input_size
+setting. For example, "--split_data=5" would split the data 
+into 5 sections, and train each section separately. The default
+is 1, or no splitting.
 
 Adding a custom dataloader would reduce RAM usage at the cost of
 training speed, and will be a focus of future work. 

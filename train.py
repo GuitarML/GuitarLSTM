@@ -50,7 +50,9 @@ def main(args):
         Note: RAM may be a limiting factor for the parameter "input_size". The wav data
           is preprocessed and stored in RAM, which improves training speed but quickly runs out
           if using a large number for "input_size".  Reduce this if you are experiencing
-          RAM issues. 
+          RAM issues. Also, you can use the "--split_data" option to divide the data by the
+          specified amount and train the model on each set. Doing this will allow for a higher
+          input_size setting (more accurate results).
         
         --training_mode=0   Speed training (default)
         --training_mode=1   Accuracy training
@@ -89,25 +91,6 @@ def main(args):
         conv1d_filters = 36
         hidden_units= 96
 
-
-    # Load and Preprocess Data ###########################################
-    in_rate, in_data = wavfile.read(args.in_file)
-    out_rate, out_data = wavfile.read(args.out_file)
-
-    X = in_data.astype(np.float32).flatten()  
-    X = normalize(X).reshape(len(X),1)   
-    y = out_data.astype(np.float32).flatten() 
-    y = normalize(y).reshape(len(y),1)   
-
-    y_ordered = y[input_size-1:] 
-
-    indices = np.arange(input_size) + np.arange(len(X)-input_size+1)[:,np.newaxis] 
-    X_ordered = tf.gather(X,indices) 
-
-    shuffled_indices = np.random.permutation(len(X_ordered)) 
-    X_random = tf.gather(X_ordered,shuffled_indices)
-    y_random = tf.gather(y_ordered, shuffled_indices)
-
     # Create Sequential Model ###########################################
     clear_session()
     model = Sequential()
@@ -118,22 +101,75 @@ def main(args):
     model.compile(optimizer=Adam(learning_rate=learning_rate), loss=error_to_signal, metrics=[error_to_signal])
     print(model.summary())
 
-    # Train Model ###################################################
-    model.fit(X_random,y_random, epochs=epochs, batch_size=batch_size, validation_split=test_size)    
+    # Load and Preprocess Data ###########################################
+    in_rate, in_data = wavfile.read(args.in_file)
+    out_rate, out_data = wavfile.read(args.out_file)
 
-    model.save('models/'+name+'/'+name+'.h5')
+    X_all = in_data.astype(np.float32).flatten()  
+    X_all = normalize(X_all).reshape(len(X_all),1)   
+    y_all = out_data.astype(np.float32).flatten() 
+    y_all = normalize(y_all).reshape(len(y_all),1)   
+
+    # If splitting the data for training, do this part
+    if args.split_data > 1:
+        num_split = len(X_all) // args.split_data
+        X = X_all[0:num_split*args.split_data]
+        y = y_all[0:num_split*args.split_data]
+        X_data = np.split(X, args.split_data)
+        y_data = np.split(y, args.split_data)
+
+        # Perform training on each split dataset
+        for i in range(len(X_data)):
+            print("\nTraining on split data " + str(i+1) + "/" +str(len(X_data)))
+            X_split = X_data[i]
+            y_split = y_data[i]
+
+            y_ordered = y_split[input_size-1:] 
+
+            indices = np.arange(input_size) + np.arange(len(X_split)-input_size+1)[:,np.newaxis] 
+            X_ordered = tf.gather(X_split,indices) 
+
+            shuffled_indices = np.random.permutation(len(X_ordered)) 
+            X_random = tf.gather(X_ordered,shuffled_indices)
+            y_random = tf.gather(y_ordered, shuffled_indices)
+
+            # Train Model ###################################################
+            model.fit(X_random,y_random, epochs=epochs, batch_size=batch_size, validation_split=0.2)  
+ 
+
+        model.save('models/'+name+'/'+name+'.h5')
+
+    # If training on the full set of input data in one run, do this part
+    else:
+        y_ordered = y_all[input_size-1:] 
+
+        indices = np.arange(input_size) + np.arange(len(X_all)-input_size+1)[:,np.newaxis] 
+        X_ordered = tf.gather(X_all,indices) 
+
+        shuffled_indices = np.random.permutation(len(X_ordered)) 
+        X_random = tf.gather(X_ordered,shuffled_indices)
+        y_random = tf.gather(y_ordered, shuffled_indices)
+
+        # Train Model ###################################################
+        model.fit(X_random,y_random, epochs=epochs, batch_size=batch_size, validation_split=test_size)    
+
+        model.save('models/'+name+'/'+name+'.h5')
 
     # Run Prediction #################################################
     print("Running prediction..")
-    y_the_rest, y_last_part = np.split(y_ordered, [int(len(y_ordered)*.8)])
-    x_the_rest, x_last_part = np.split(X, [int(len(X)*.8)])
 
-    x_the_rest, x_ordered_last_part = np.split(X_ordered, [int(len(X_ordered)*.8)])
-    prediction = model.predict(x_ordered_last_part, batch_size=batch_size)
+    # Get the last 20% of the wav data to run prediction and plot results
+    y_the_rest, y_last_part = np.split(y_all, [int(len(y_all)*.8)])
+    x_the_rest, x_last_part = np.split(X_all, [int(len(X_all)*.8)])
+    y_test = y_last_part[input_size-1:] 
+    indices = np.arange(input_size) + np.arange(len(x_last_part)-input_size+1)[:,np.newaxis] 
+    X_test = tf.gather(x_last_part,indices) 
+
+    prediction = model.predict(X_test, batch_size=batch_size)
 
     save_wav('models/'+name+'/y_pred.wav', prediction)
     save_wav('models/'+name+'/x_test.wav', x_last_part)
-    save_wav('models/'+name+'/y_test.wav', y_last_part)
+    save_wav('models/'+name+'/y_test.wav', y_test)
 
     # Add additional data to the saved model (like input_size)
     filename = 'models/'+name+'/'+name+'.h5'
@@ -166,5 +202,6 @@ if __name__ == "__main__":
     parser.add_argument("--max_epochs", type=int, default=1)
     parser.add_argument("--create_plots", type=int, default=1)
     parser.add_argument("--input_size", type=int, default=100)
+    parser.add_argument("--split_data", type=int, default=1)
     args = parser.parse_args()
     main(args)
