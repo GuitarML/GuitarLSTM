@@ -18,7 +18,7 @@ Re-creation of LSTM model from [Real-Time Guitar Amplifier Emulation with Deep
 Learning](https://www.mdpi.com/2076-3417/10/3/766/htm)
 
 
-For a great explanation of how LSTMs works, check out this blog post:<br>
+For a great explanation of how LSTMs work, check out this blog post:<br>
 https://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
 
