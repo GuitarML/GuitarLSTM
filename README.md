@@ -14,7 +14,7 @@ copy the sound of complex guitar signals while still training on a CPU.
 
 
 ## Info
-Re-creation of LSTM model from [Real-Time Guitar Amplifier Emulation with Deep
+A variation on the LSTM model from [Real-Time Guitar Amplifier Emulation with Deep
 Learning](https://www.mdpi.com/2076-3417/10/3/766/htm)
 
 
