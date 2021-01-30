@@ -104,12 +104,12 @@ is 1, or no splitting.
 Adding a custom dataloader would reduce RAM usage at the cost of
 training speed, and will be a focus of future work. 
    
-A real-time implementation for use in a guitar plugin is
-currenty in work. This would theoretically perform much faster
-(less cpu usage) than the previous WaveNet model. If you want to
-use deep learning models through a real time guitar plugin, 
-reference the following repositories:
+A real-time implementation for use in a guitar plugin is out:
+SmartAmpPro<br>
+https://github.com/GuitarML/SmartAmpPro<br>
 
+
+Also see:
 PedalNetRT<br>
 https://github.com/GuitarML/PedalNetRT<br>
 
