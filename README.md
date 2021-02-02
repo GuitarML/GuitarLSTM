@@ -108,6 +108,9 @@ A real-time implementation for use in a guitar plugin is out:
 SmartAmpPro<br>
 https://github.com/GuitarML/SmartAmpPro<br>
 
+Note: The model training has been integrated into the SmartAmpPro plugin, the 
+models trained with GuitarLSTM are not compatible with the plugin.
+
 
 Also see:
 PedalNetRT<br>
