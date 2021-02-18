@@ -18,9 +18,7 @@ A variation on the LSTM model from [Real-Time Guitar Amplifier Emulation with De
 Learning](https://www.mdpi.com/2076-3417/10/3/766/htm)
 
 
-For a great explanation of how LSTMs work, check out this blog post:<br>
-https://colah.github.io/posts/2015-08-Understanding-LSTMs/
-
+For a great explanation of how LSTMs work, check out this [blog post](https://colah.github.io/posts/2015-08-Understanding-LSTMs/).
 
 ## Data
 
@@ -101,20 +99,11 @@ setting. For example, "--split_data=5" would split the data
 into 5 sections, and train each section separately. The default
 is 1, or no splitting.
 
-Adding a custom dataloader would reduce RAM usage at the cost of
-training speed, and will be a focus of future work. 
+A custom dataloader has been added to the Colab notebook using MSE
+for the loss calculation. This reduces RAM usage and eliminates the 
+need for the --split_data parameter.
    
-A real-time implementation for use in a guitar plugin is out:
-SmartAmpPro<br>
-https://github.com/GuitarML/SmartAmpPro<br>
+A real-time implementation for use in a guitar plugin: [SmartAmpPro](https://github.com/GuitarML/SmartAmpPro)
 
 Note: The model training has been integrated into the SmartAmpPro plugin, the 
 models trained with GuitarLSTM are not currently compatible with the plugin.
-
-
-Also see:
-PedalNetRT<br>
-https://github.com/GuitarML/PedalNetRT<br>
-
-SmartGuitarAmp<br>
-https://github.com/GuitarML/SmartGuitarAmp<br>
