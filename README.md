@@ -8,7 +8,7 @@ like the amp or effect. This code uses Tensorflow/Keras.
 
 The LSTM (Long short-term memory) model is effective for copying the sound of 
 tube amplifiers, distortion, overdrive, and compression. It also captures the 
-impluse response of the mic/cab used for recording the samples. In comparison
+impulse response of the mic/cab used for recording the samples. In comparison
 to the WaveNet model, this implementation is much faster and can more accurately 
 copy the sound of complex guitar signals while still training on a CPU.
 
